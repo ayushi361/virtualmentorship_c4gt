@@ -1,0 +1,30 @@
+from PyPDF2 import PdfReader
+import os
+
+pdf_folder_path = 'Data'
+
+pdf_files = [f for f in os.listdir(pdf_folder_path) if f.endswith('.pdf')]
+
+def read_pdf(file_path):
+    with open(file_path, 'rb') as file:
+        reader = PdfReader(file)
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+
+all_text = ''
+
+# Loop through all PDF files in the folder and append their text to all_text
+for pdf_file in pdf_files:
+    file_path = os.path.join(pdf_folder_path, pdf_file)
+    pdf_text = read_pdf(file_path)
+    
+    all_text += f'Content of {pdf_file}:\n\n'
+    all_text += pdf_text
+
+output_file_name = 'extracted_texts.txt'
+with open(output_file_name, 'w', encoding='utf-8') as text_file:
+    text_file.write(all_text)
+
+print(f'Saved all PDF content to {output_file_name}')
