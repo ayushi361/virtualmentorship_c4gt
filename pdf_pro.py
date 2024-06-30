@@ -1,8 +1,8 @@
 import os
 from PyPDF2 import PdfReader
 import docx
+import time
 
-# docx and pdf reader 
 def get_pdf_text():
     text = ""
     folder_path = "pdfs"
@@ -21,7 +21,6 @@ def get_pdf_text():
         except Exception as e:
             error_message = f"Error reading DOCX file '{docx_file}': {e}"
             print(error_message)
-            log_error(error_message)
 
     for pdf_file in pdf_files:
         pdf_path = os.path.join(folder_path, pdf_file)
@@ -34,6 +33,5 @@ def get_pdf_text():
         except Exception as e:
             error_message = f"Error reading PDF file '{pdf_file}': {e}"
             print(error_message)
-            log_error(error_message)
     
     return text
