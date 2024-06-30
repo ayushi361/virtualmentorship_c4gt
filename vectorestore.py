@@ -30,5 +30,6 @@ def create_faiss_index_in_batches(docs, batch_size, sleep_time):
     
     return faiss_index
 
+
 def save_faiss_index(faiss_index, path):
     faiss_index.save_local(path)

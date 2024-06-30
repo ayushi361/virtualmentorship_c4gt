@@ -2,6 +2,7 @@ from pdf_pro import get_pdf_text
 from chunks import load_config, split_with_character_text_splitter
 from vectorestore import create_faiss_index_in_batches, save_faiss_index
 
+
 def main():
     text = get_pdf_text()
     

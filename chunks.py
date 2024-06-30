@@ -2,7 +2,7 @@ import json
 from langchain_text_splitters import CharacterTextSplitter
 from langchain.docstore.document import Document
 
-# Load the config values from the JSON file
+# Load the config values from the JSON files
 def load_config(config_path='config.json'):
     try:
         with open(config_path, 'r') as config_file:

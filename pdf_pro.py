@@ -1,7 +1,6 @@
 import os
 from PyPDF2 import PdfReader
 import docx
-import time
 
 def get_pdf_text():
     text = ""
