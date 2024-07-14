@@ -1,6 +1,6 @@
 {
     "chunk_size": 1000,
     "chunk_overlap": 200,
-    "batch_size": 50,
-    "sleep_time": 5
+    "batch_size": 20,
+    "sleep_time": 20
 }

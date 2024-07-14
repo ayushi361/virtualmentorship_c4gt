@@ -1,28 +1,44 @@
-from pdf_pro import get_pdf_text
-from chunks import load_config, split_with_character_text_splitter
-from vectorestore import create_faiss_index_in_batches, save_faiss_index
+import os
+from retrieval import get_retriever
+from vectorestore import create_new_faiss
+from llm import get_llm_instance
 
 
-def main():
-    text = get_pdf_text()
-    
-    config = load_config()
-    if config is None:
-        print("Failed to load configuration.")
-        return
-    
-    chunk_size = config['chunk_size']
-    chunk_overlap = config['chunk_overlap']
-    
-    chunks = split_with_character_text_splitter(text, chunk_size, chunk_overlap)
-    
-    batch_size = config.get('batch_size', 50) 
-    sleep_time = config.get('sleep_time', 5)  
-    faiss_index = create_faiss_index_in_batches(chunks, batch_size, sleep_time)
-    
-    save_faiss_index(faiss_index, "faiss_index_with_google")
-    
-    print("FAISS index created and saved successfully.")
+prompt_template = """You're an  civic tech and environment specialist, you need to give answer to solve local public issues related to environment and local civic issues only. 
+Try to answer within the given context. Dont give answer if the question is not related to the environment issues or local civic issues, simply say I dont know. 
 
-if __name__ == "__main__":
-    main()
+
+User Question : ```{question}```
+
+Context : ```{context}```
+
+#Answer"""
+
+
+def get_response(question):
+    try:
+        retriever = get_retriever()
+        relevant_docs = retriever.invoke(question)
+        final_prompt = prompt_template.format(question=question, context=relevant_docs)
+        llm = get_llm_instance()
+        gemini_res = llm.invoke(final_prompt)
+
+        return gemini_res.content
+    
+    except Exception as e:
+        print(f"Exception : {e}")
+    
+
+
+faiss_index_path = "faiss_index_with_google"
+
+if os.path.exists(faiss_index_path):
+    print("Using Existing FAISS!")
+else:
+    create_new_faiss()
+
+while True:
+    question = input("Enter Question : ")
+    gemini_res = get_response(question)
+    print(gemini_res+"\n-------------------------------------------------------------------------------------------------------")
+

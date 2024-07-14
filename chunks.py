@@ -25,7 +25,7 @@ def split_with_character_text_splitter(text, chunk_size, chunk_overlap):
     )
     chunks = text_splitter.split_text(text)
     
-    # Save all chunks to a single file
+    # Save all chunks to a single files
     with open('chunks.txt', 'w', encoding='utf-8') as chunks_file:
         for chunk in chunks:
             chunks_file.write(chunk + '\n\n')  # Add newline between chunks

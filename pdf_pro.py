@@ -1,6 +1,6 @@
 import os
+import docx2txt
 from PyPDF2 import PdfReader
-import docx
 
 def get_pdf_text():
     text = ""
@@ -11,12 +11,8 @@ def get_pdf_text():
     for docx_file in docx_files:
         docx_path = os.path.join(folder_path, docx_file)
         try:
-            doc = docx.Document(docx_path)
-            for paragraph in doc.paragraphs:
-                if paragraph.style.name == 'List Bullet':
-                    text += '• ' + paragraph.text + '\n'  
-                else:
-                    text += paragraph.text + '\n'
+            doc_text = docx2txt.process(docx_path)
+            text += doc_text + '\n'
         except Exception as e:
             error_message = f"Error reading DOCX file '{docx_file}': {e}"
             print(error_message)
